@@ -4,8 +4,8 @@ import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import org.fknives.android.compose.picker.text.util.TextPickerDefaults
 import org.fknives.android.compose.picker.text.TextPickerState
+import org.fknives.android.compose.picker.text.util.TextPickerDefaults
 
 @Composable
 fun NumberPicker(
@@ -43,10 +43,10 @@ fun NumberPicker(
     require(selectedValue >= config.minimum) { "Selected Value($selectedValue) is less than Minimum (${config.minimum})!" }
     require(selectedValue <= config.maximum) { "Selected Value($selectedValue) is more than Maximum (${config.maximum})!" }
     val numberPickerScope = rememberNumberPickerScope(
-        state,
-        config,
-        onIndexDifferenceChanging,
-        onSelectedChange
+        state = state,
+        config = config,
+        onIndexDifferenceChanging = onIndexDifferenceChanging,
+        onSelectedChange = onSelectedChange
     )
 
     timePicker(numberPickerScope)

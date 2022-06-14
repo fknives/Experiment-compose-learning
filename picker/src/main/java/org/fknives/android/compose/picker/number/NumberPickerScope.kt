@@ -33,7 +33,9 @@ fun rememberNumberPickerScope(
             state = state,
             textForIndex = { "${indexToNumber(it)}" },
             onIndexDifferenceChanging = onIndexDifferenceChanging,
-            onSelectedIndexChange = { onSelectedChange(indexToNumber(it)) }
+            onSelectedIndexChange = {
+                onSelectedChange(indexToNumber(it))
+            }
         )
     }
 }
