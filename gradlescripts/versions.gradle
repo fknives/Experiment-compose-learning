@@ -1,0 +1,7 @@
+project.ext {
+    compose_version = "1.2.0-beta03"
+    kotlin_coroutine_version = "1.5.2"
+    appcompat_version = "1.4.0"
+    kotlin_version = "1.6.10"
+    composeKotlinCompilerExtensionVersion = "1.1.1"
+}

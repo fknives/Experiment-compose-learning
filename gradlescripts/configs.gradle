@@ -1,0 +1,9 @@
+project.ext {
+    defaultCompileSdkVersion = 32
+    defaultMinSdkVersion = 23
+    defaultTargetSdkVersion = 32
+    defaultVersionCode = 1
+    defaultVersionName = "1.0"
+    compileCompatibility = JavaVersion.VERSION_1_8
+    kotlinJvmTarget = "1.8"
+}
