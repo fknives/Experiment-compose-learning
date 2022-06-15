@@ -16,6 +16,21 @@ import org.fknives.android.compose.picker.text.util.TextPickerDefaults
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+/**
+ * Animator for [TextPicker]
+ *
+ * Handles 3 actions:
+ * - Continuous Dragging via [onDeltaY]
+ * - Scrolling Fling Animation via [flingAndSnap]
+ * - Scrolling newly selected item via [snapToIndex]
+ *
+ * @param flingDecaySpec AnimationSpec calculating expected scrolling by the given velocity. Used for the Fling Animation.
+ * @param flingAnimationSpec AnimationSpec used to do the actual scrolling animation, used in both animations.
+ * @param velocityMultiplier Controls Velocity to Slow or Fasten fling calculation, Raw Velocity is multiplied with this parameter.
+ * @param offsetLimiter Limits the offset animation. This can be used, to not let over scrolling happen after a given index or similar.
+ * @param onIndexDifferenceChanging Index Difference updates as animations and dragging happens.
+ * Negative values mean the index were decreased, Positive means it was increased.
+ */
 class TextPickerAnimator(
     private val flingDecaySpec: DecayAnimationSpec<Float>,
     private val flingAnimationSpec: AnimationSpec<Float> = spring(0.75f),

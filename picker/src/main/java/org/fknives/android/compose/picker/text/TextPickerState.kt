@@ -6,6 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
+/**
+ * Internal State for [TextPicker]
+ *
+ * Holds the Scrolling [offset] changes and Text [itemSize]-s.
+ * From this the Translations and index changes are Derived.
+ */
 class TextPickerState(
     itemSizeState: MutableState<Float>,
     previousSelectedState: MutableState<Int>,

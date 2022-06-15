@@ -59,9 +59,9 @@ fun TextPickerScreen() {
                 var selected by remember { mutableStateOf(0) }
                 LinedTextPicker(
                     modifier = Modifier.defaultMinSize(minWidth = 200.dp),
-                    selected = selected,
+                    selectedIndex = selected,
                     textForIndex = text::get,
-                    onSelectedChange = {
+                    onSelectedIndexChange = {
                         selected = it
                     },
                     textStyle = MaterialTheme.typography.h5,

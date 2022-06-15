@@ -46,8 +46,8 @@ fun NumberPickerScope.LinedInnerTextPicker(modifier: Modifier = Modifier) {
         modifier = modifier,
         textForIndex = textForIndex,
         itemCount = itemCount,
-        selected = selectedIndex,
-        onSelectedChange = onSelectedIndexChange,
+        selectedIndex = selectedIndex,
+        onSelectedIndexChange = onSelectedIndexChange,
         onIndexDifferenceChanging = onIndexDifferenceChanging,
         state = state
     )

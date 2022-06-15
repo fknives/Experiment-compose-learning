@@ -15,13 +15,48 @@ import androidx.compose.ui.layout.MeasurePolicy
 import androidx.compose.ui.text.TextStyle
 import org.fknives.android.compose.picker.text.content.DefaultTextPickerContent
 import org.fknives.android.compose.picker.text.content.DefaultTextPickerMeasurePolicy
+import org.fknives.android.compose.picker.text.content.TextPickerContent
 import org.fknives.android.compose.picker.text.content.defaultNumberPickerTextAlphaModifier
 import org.fknives.android.compose.picker.text.util.TextPickerDefaults
 import org.fknives.android.compose.picker.text.util.rememberDefaultMoveUnsafeToProperIndex
 import org.fknives.android.compose.picker.text.util.rememberTextPickerAnimator
 import org.fknives.android.compose.picker.text.util.rememberTextPickerState
-import org.fknives.android.compose.picker.text.util.rememberWrappedTextForIndex
+import org.fknives.android.compose.picker.text.util.rememberSafeTextForIndex
 
+/**
+ * NumberPicker Custom Layout Composable which shows given text on each index.
+ * Shows 3 selections options (while animating may show 4).
+ * Scrolling the Composable moves between elements and at the end of the movement is selects the most middle element.
+ *
+ * If no selection changes, snaps back to the selected element.
+ * Longer drags and letting go, animates scrolling over elements.
+ * Remembers the previously selected element and when selecting programmatically, scrolls to it..
+ * (Selected by UI action makes it previously selected before sending back the event, aka no double animation)
+ *
+ * @param modifier Standard Modifier for the Layout
+ * @param textForIndex Used to display Text for the given index. Indexes are between `0 until [itemCount]`.
+ * @param itemCount Number of Elements that can be selected
+ * @param selectedIndex Currently selected index. Must be between `0 until [itemCount]`
+ * @param onSelectedIndexChange Notified after animation, what the User selected through dragging of the UI.
+ * @param textStyle Default textStyle provided for the Text Composables inside the Layout.
+ * @param roundAround Behavioural change:
+ * Setting this to True, means the elements behave like a wheel, and the last element is above the first.
+ * Setting this to False, means the first element has no elements above it, and the last element has no element below it.
+ * @param onIndexDifferenceChanging Signals the animation changes, how much the current dragging is away from [selectedIndex].
+ * Negative values mean the index were decreased, Positive means it was increased.
+ * @param state Animation State for the TextPicker
+ * @param animator Uses state to Animate the Composable elements. Handles continous drag, calculating fling and snapping to an index.
+ * @param textPickerContent The actual Composables inside the TextPicker, by default it is the 4 Texts
+ * @param textPickerMeasurePolicy The MeasurePolicy of the Layout, by default Translates the 4 Texts in [textPickerContent]
+ * according to [state] changed by [animator]
+ * @param pickerItem The Expected Text Composables in [textPickerContent].
+ * text is the given Text for the Item.
+ * translation is the movement of the element:
+ * - 1.0 -> selected
+ * - 0.5 -> unselected
+ * - 0.0 -> completely outside of boundaries.
+ * - movement between translation are expected to be proper (such as setting alpha based on the translation linearly).
+ */
 @Composable
 fun TextPicker(
     modifier: Modifier = Modifier,
@@ -40,7 +75,12 @@ fun TextPicker(
 ) {
 
     val moveUnsafeToProperIndex: (Int) -> Int = rememberDefaultMoveUnsafeToProperIndex(itemCount = itemCount, roundAround = roundAround)
-    val rememberTextForIndex = rememberWrappedTextForIndex(itemCount = itemCount, roundAround = roundAround, textForIndex = textForIndex)
+    val rememberTextForIndex = rememberSafeTextForIndex(
+        itemCount = itemCount,
+        roundAround = roundAround,
+        textForIndex = textForIndex,
+        moveUnsafeToProperIndex = moveUnsafeToProperIndex
+    )
 
     Layout(
         modifier = modifier
@@ -70,7 +110,6 @@ fun TextPicker(
                 textPickerContent.Content(
                     textForIndex = rememberTextForIndex,
                     item = pickerItem,
-                    moveUnsafeToProperIndex = moveUnsafeToProperIndex,
                     selected = moveUnsafeToProperIndex(selectedIndex + state.indexOffset),
                     before1TranslatePercent = state.before1TranslatePercent,
                     itemTranslatePercent = state.itemTranslatePercent,
@@ -83,16 +122,3 @@ fun TextPicker(
     )
 }
 
-fun interface TextPickerContent {
-    @Composable
-    fun Content(
-        textForIndex: (Int) -> String,
-        selected: Int,
-        moveUnsafeToProperIndex: (Int) -> Int,
-        before1TranslatePercent: Float,
-        itemTranslatePercent: Float,
-        after1TranslatePercent: Float,
-        after2TranslatePercent: Float,
-        item: @Composable (text: String, translation: Float) -> Unit
-    )
-}

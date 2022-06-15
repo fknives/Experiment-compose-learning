@@ -9,6 +9,9 @@ import androidx.compose.ui.unit.Density
 import org.fknives.android.compose.picker.text.TextPickerAnimator
 import org.fknives.android.compose.picker.text.TextPickerState
 
+/**
+ * Helper function caching [TextPickerState]
+ */
 @Composable
 fun rememberTextPickerState(selected: Int, itemCount: Int): TextPickerState {
     require(selected >= 0) { "Selected value ($selected) is less than 0!" }
@@ -26,6 +29,9 @@ fun rememberTextPickerState(selected: Int, itemCount: Int): TextPickerState {
     }
 }
 
+/**
+ * Helper function caching [TextPickerAnimator]
+ */
 @Composable
 fun rememberTextPickerAnimator(
     roundAround: Boolean,
@@ -43,6 +49,9 @@ fun rememberTextPickerAnimator(
     )
 }
 
+/**
+ * Helper function caching [TextPickerAnimator]
+ */
 @Composable
 fun rememberTextPickerAnimator(
     offsetLimiter: OffsetLimiter,
@@ -61,6 +70,12 @@ fun rememberTextPickerAnimator(
     }
 }
 
+/**
+ * Creates a Lambda changing index based on [roundAround].
+ *
+ * If roundAround is False, means the index is not touched, since it should not behave like a wheel.
+ * IF roundAround is True, means the index is feed into [moveUnsafeToProperIndex] to behave like a wheel.
+ */
 @Composable
 fun rememberDefaultMoveUnsafeToProperIndex(itemCount: Int, roundAround: Boolean) =
     if (roundAround) {
@@ -69,12 +84,21 @@ fun rememberDefaultMoveUnsafeToProperIndex(itemCount: Int, roundAround: Boolean)
         remember { { index: Int -> index } }
     }
 
-
+/**
+ * Curry function for [moveUnsafeToProperIndex] which stores the [itemCount]
+ *
+ * @return lambda expecting the unsafeIndex to call [moveUnsafeToProperIndex]
+ */
 fun createMoveUnsafeToProperIndex(itemCount: Int) = moveUnsafeToProperIndex@{ unsafeIndex: Int ->
     moveUnsafeToProperIndex(unsafeIndex, itemCount)
 }
 
-fun moveUnsafeToProperIndex(unsafeIndex: Int, itemCount: Int) : Int {
+/**
+ * Moves a given [unsafeIndex] between `0 until [itemCount]` like it is a continuous wheel.
+ * Meaning that `unsafeIndex=-1` becomes `itemCount-1` while `unsafeIndex=itemCount` becomes 0.
+ *
+ */
+fun moveUnsafeToProperIndex(unsafeIndex: Int, itemCount: Int): Int {
     var index = unsafeIndex
     while (index < 0) {
         index += itemCount
@@ -85,13 +109,42 @@ fun moveUnsafeToProperIndex(unsafeIndex: Int, itemCount: Int) : Int {
     return index
 }
 
+/**
+ * Caches function accessing text for given index safely.
+ * [roundAround] True means the Index will be modified if it needs to be to fall between the safe range for [textForIndex]
+ * [roundAround] False means the if the Index is falls outside of safeZone, [textForUnsafeIndex] will be used as fallback.
+ * Note: unsafeIndex means the index NOT between `0 until itemCount`.
+ */
 @Composable
-fun rememberWrappedTextForIndex(itemCount: Int, roundAround: Boolean, textForIndex: (Int) -> String): (Int) -> String =
+fun rememberSafeTextForIndex(
+    textForUnsafeIndex: String = "",
+    itemCount: Int,
+    roundAround: Boolean,
+    textForIndex: (Int) -> String,
+    moveUnsafeToProperIndex: (Int) -> Int
+): (Int) -> String =
     if (roundAround) {
-        textForIndex
+        remember(moveUnsafeToProperIndex, textForIndex) {
+            createSafeRoundAroundTextForIndex(moveUnsafeToProperIndex = moveUnsafeToProperIndex, textForIndex = textForIndex)
+        }
     } else {
         remember(itemCount, textForIndex) {
-            { index -> if (index < 0 || index >= itemCount) "" else textForIndex(index) }
+            createSafeOrDefaultTextForIndex(itemCount = itemCount, textForIndex = textForIndex, textForUnsafeIndex = textForUnsafeIndex)
         }
     }
 
+/**
+ * Returns lambda, which ensures the index is moved to into safe position by [moveUnsafeToProperIndex] before accessing [textForIndex]
+ */
+fun createSafeRoundAroundTextForIndex(moveUnsafeToProperIndex: (Int) -> Int, textForIndex: (Int) -> String): (Int) -> String =
+    { index: Int ->
+        textForIndex(moveUnsafeToProperIndex(index))
+    }
+
+/**
+ * Returns lambda, which ensures the index is between `0 until itemCount` before accessing [textForIndex], fallbacks [textForUnsafeIndex]
+ */
+fun createSafeOrDefaultTextForIndex(textForUnsafeIndex: String = "", itemCount: Int, textForIndex: (Int) -> String): (Int) -> String =
+    { index: Int ->
+        if (index in 0 until itemCount) textForIndex(index) else textForUnsafeIndex
+    }

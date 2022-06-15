@@ -8,6 +8,16 @@ import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.unit.Constraints
 import org.fknives.android.compose.picker.text.TextPickerState
 
+/**
+ * Default TextMeasurePolicy of [TextPicker][org.fknives.android.compose.picker.text.TextPicker].
+ *
+ * Intended to be used together with [TextPickerContent] and [DefaultTextPickerContent].
+ *
+ * The expected [numberOfItemsToPlace] items are places one below the other, translated by [state].
+ * Only [numberOfHeightMeasuringItems] items are counted in height, because elements are expected to be translated in and out of boundaries.
+ *
+ * Can be extended via [placementAfterItems] to place additional Items if necessary.
+ */
 open class DefaultTextPickerMeasurePolicy(private val state: TextPickerState) : MeasurePolicy {
 
     open val numberOfItemsToPlace = 4

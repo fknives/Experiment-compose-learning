@@ -4,10 +4,24 @@ import org.fknives.android.compose.picker.text.TextPickerState
 import kotlin.math.max
 import kotlin.math.min
 
+/**
+ * Scrolling Offset Limiter intended for [TextPickerAnimator][org.fknives.android.compose.picker.text.TextPickerAnimator].
+ *
+ * Provides to [default]s:
+ * - [NoLimit] Used when scrolling should not be limited
+ * (like RoundAround ([TextPicker][org.fknives.android.compose.picker.text.TextPicker])
+ * - [MinMaxLimit] Used when scrolling should be limited to maximum scroll of up to First Element and down to LastElement.
+ */
 fun interface OffsetLimiter {
 
+    /**
+     * Hard limit on offset, to ensure indexes are within range.
+     */
     fun limit(offset: Float, state: TextPickerState): Float
 
+    /**
+     * Soft limit on offset, to enable overshooting for animations.
+     */
     fun overshootLimit(offset: Float, state: TextPickerState): Float =
         limit(offset, state)
 
