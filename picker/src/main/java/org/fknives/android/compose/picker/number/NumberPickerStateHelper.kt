@@ -5,7 +5,11 @@ import androidx.compose.runtime.remember
 import org.fknives.android.compose.picker.text.TextPickerState
 import org.fknives.android.compose.picker.text.util.rememberTextPickerState
 
-
+/**
+ * Caches function converting from TextPicker's Index to NumberPicker's NumberValues, defined by [config]
+ *
+ * Inverse of [valueToIndex]
+ */
 @Composable
 fun rememberNumberPickerIndexToNumber(config: NumberPickerConfig): (Int) -> Int =
     remember(config) {
@@ -20,6 +24,11 @@ fun rememberNumberPickerIndexToNumber(config: NumberPickerConfig): (Int) -> Int 
         }
     }
 
+/**
+ * Function converting from  NumberPicker's NumberValues to TextPicker's Index, defined by [config].
+ *
+ * Inverse of [valueToIndex]
+ */
 private fun valueToIndex(config: NumberPickerConfig, value: Int): Int =
     if (config.reversedOrder) {
         (config.maximum - value) / (config.skipInBetween + 1)
@@ -27,6 +36,9 @@ private fun valueToIndex(config: NumberPickerConfig, value: Int): Int =
         (value - config.minimum) / (config.skipInBetween + 1)
     }
 
+/**
+ * Caches [TextPickerState] created from the NumberPicker's [config] and [selectedValue].
+ */
 @Composable
 fun rememberNumberPickerState(selectedValue: Int, config: NumberPickerConfig): TextPickerState {
     val selected = valueToIndex(value = selectedValue, config = config)

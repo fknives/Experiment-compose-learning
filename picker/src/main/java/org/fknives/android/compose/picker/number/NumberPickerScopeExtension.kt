@@ -8,6 +8,12 @@ import org.fknives.android.compose.picker.text.LinedTextPicker
 import org.fknives.android.compose.picker.text.TextPicker
 import org.fknives.android.compose.picker.text.util.TextPickerDefaults
 
+/**
+ * Custom [TextPicker] Creator for [NumberPicker], containing all styling [TextPicker].
+ * Keeps all the default values of [TextPicker].
+ *
+ * For More Customization, Give your Custom TextPicker callback to [NumberPicker]
+ */
 @Composable
 fun NumberPickerScope.CustomInnerTextPicker(
     modifier: Modifier = Modifier,
@@ -27,6 +33,10 @@ fun NumberPickerScope.CustomInnerTextPicker(
     )
 }
 
+/**
+ * Default [TextPicker] Creator for [NumberPicker].
+ * Keeps all the default values of [TextPicker].
+ */
 @Composable
 fun NumberPickerScope.StandardInnerTextPicker(modifier: Modifier = Modifier) {
     TextPicker(
@@ -40,6 +50,10 @@ fun NumberPickerScope.StandardInnerTextPicker(modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * Default [LinedTextPicker] Creator for [NumberPicker].
+ * Keeps all the default values of [LinedTextPicker].
+ */
 @Composable
 fun NumberPickerScope.LinedInnerTextPicker(modifier: Modifier = Modifier) {
     LinedTextPicker(

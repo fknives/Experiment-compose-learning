@@ -31,7 +31,7 @@ fun NumberPickerScreen() {
                 var selected by remember { mutableStateOf(0) }
                 NumberPicker(
                     modifier = Modifier.defaultMinSize(minWidth = 200.dp),
-                    onSelectedChange = {
+                    onSelectedValueChange = {
                         selected = it
                     },
                     textStyle = MaterialTheme.typography.h5,
@@ -44,7 +44,7 @@ fun NumberPickerScreen() {
                 NumberPicker(
                     config = NumberPickerConfig.configMinutePicker,
                     selectedValue = selected,
-                    onSelectedChange = { selected = it },
+                    onSelectedValueChange = { selected = it },
                     roundAround = false,
                     textStyle = MaterialTheme.typography.h5
                 )
@@ -55,7 +55,7 @@ fun NumberPickerScreen() {
                     NumberPicker(
                         config = NumberPickerConfig.configMinutePicker,
                         selectedValue = selected,
-                        onSelectedChange = { selected = it },
+                        onSelectedValueChange = { selected = it },
                         timePicker = { LinedInnerTextPicker(modifier = Modifier.defaultMinSize(minWidth = 200.dp)) }
                     )
                 }
@@ -66,7 +66,7 @@ fun NumberPickerScreen() {
                 NumberPicker(
                     config = NumberPickerConfig.configHourPicker24,
                     selectedValue = selected,
-                    onSelectedChange = { selected = it }
+                    onSelectedValueChange = { selected = it }
                 ) {
                     TextPicker(
                         modifier = Modifier.defaultMinSize(minWidth = 200.dp),
@@ -88,7 +88,7 @@ fun NumberPickerScreen() {
                     NumberPicker(
                         config = NumberPickerConfig(maximum = 5, minimum = 1, skipInBetween = 1),
                         selectedValue = selected,
-                        onSelectedChange = { selected = it }
+                        onSelectedValueChange = { selected = it }
                     )
                 }
             }
@@ -99,7 +99,7 @@ fun NumberPickerScreen() {
                     NumberPicker(
                         config = NumberPickerConfig(maximum = 5, minimum = 1, skipInBetween = 2),
                         selectedValue = selected,
-                        onSelectedChange = { selected = it }
+                        onSelectedValueChange = { selected = it }
                     )
                 }
             }
@@ -110,7 +110,7 @@ fun NumberPickerScreen() {
                     NumberPicker(
                         config = NumberPickerConfig(maximum = 5, minimum = 1, skipInBetween = 1, reversedOrder = true),
                         selectedValue = selected,
-                        onSelectedChange = { selected = it }
+                        onSelectedValueChange = { selected = it }
                     )
                 }
             }
@@ -122,7 +122,7 @@ fun NumberPickerScreen() {
                         config = NumberPickerConfig(maximum = 5, minimum = 1, skipInBetween = 2, reversedOrder = true),
                         selectedValue = selected,
                         roundAround = false,
-                        onSelectedChange = { selected = it },
+                        onSelectedValueChange = { selected = it },
                     )
                 }
             }

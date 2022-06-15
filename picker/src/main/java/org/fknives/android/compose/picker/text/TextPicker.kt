@@ -44,6 +44,7 @@ import org.fknives.android.compose.picker.text.util.rememberSafeTextForIndex
  * Setting this to False, means the first element has no elements above it, and the last element has no element below it.
  * @param onIndexDifferenceChanging Signals the animation changes, how much the current dragging is away from [selectedIndex].
  * Negative values mean the index were decreased, Positive means it was increased.
+ * **IMPORTANT! works with index-difference, not index**
  * @param state Animation State for the TextPicker
  * @param animator Uses state to Animate the Composable elements. Handles continous drag, calculating fling and snapping to an index.
  * @param textPickerContent The actual Composables inside the TextPicker, by default it is the 4 Texts

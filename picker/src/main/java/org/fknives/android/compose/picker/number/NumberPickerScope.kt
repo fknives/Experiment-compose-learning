@@ -6,6 +6,36 @@ import androidx.compose.runtime.remember
 import org.fknives.android.compose.picker.text.util.TextPickerDefaults
 import org.fknives.android.compose.picker.text.TextPickerState
 
+/**
+ * Prepared parameters for [TextPicker][org.fknives.android.compose.picker.text.TextPicker].
+ *
+ * [state] The [TextPickerState] expected to be set to [TextPicker][org.fknives.android.compose.picker.text.TextPicker]
+ *
+ * [onIndexDifferenceChanging] The onIndexDifferenceChanging Listener expected to be set to
+ * [TextPicker][org.fknives.android.compose.picker.text.TextPicker]
+ *
+ * [onSelectedIndexChange] The onSelectedIndexChange Listener expected to be set to
+ * [TextPicker][org.fknives.android.compose.picker.text.TextPicker]
+ *
+ * [textForIndex] The IndexToNumberVlaue Converter expected to be set to [TextPicker][org.fknives.android.compose.picker.text.TextPicker]
+ *
+ * [selectedIndex] The selectedIndex expected to be set to [TextPicker][org.fknives.android.compose.picker.text.TextPicker]
+ *
+ * [itemCount] The selectedIndex expected to be set to [TextPicker][org.fknives.android.compose.picker.text.TextPicker]
+ */
+@Immutable
+interface NumberPickerScope {
+    val state: TextPickerState
+    val onIndexDifferenceChanging: (Int) -> Unit
+    val onSelectedIndexChange: (Int) -> Unit
+    val textForIndex: (Int) -> String
+    val selectedIndex: Int get() = state.selected
+    val itemCount: Int get() = state.itemCount
+}
+
+/**
+ * Data class implementation of [NumberPickerScope]
+ */
 @Immutable
 data class NumberPickerScopeImpl(
     override val state: TextPickerState,
@@ -17,11 +47,20 @@ data class NumberPickerScopeImpl(
     override val itemCount: Int get() = state.itemCount
 }
 
+/**
+ * Caching function, preparing the [NumberPickerScope] from simple parameters.
+ *
+ * @param state The [TextPickerState] expected to be set to [TextPicker][org.fknives.android.compose.picker.text.TextPicker]
+ * @param config The NumberPickers config. Used to convert between TextPicker's Index and NumberPicker's values.
+ * @param onSelectedValueChange NumberPicker's onSelectedValueChange Listener
+ * @param onIndexDifferenceChanging NumberPicker's onIndexDifferenceChanging Listener
+ * @param keys any additional keys, to signal changing of the scope cache.
+ */
 @Composable
 fun rememberNumberPickerScope(
     state: TextPickerState,
     config: NumberPickerConfig,
-    onSelectedChange: (Int) -> Unit,
+    onSelectedValueChange: (Int) -> Unit,
     onIndexDifferenceChanging: (Int) -> Unit = TextPickerDefaults.onIndexDifferenceChanging,
     vararg keys: Any?
 ): NumberPickerScope {
@@ -34,18 +73,8 @@ fun rememberNumberPickerScope(
             textForIndex = { "${indexToNumber(it)}" },
             onIndexDifferenceChanging = onIndexDifferenceChanging,
             onSelectedIndexChange = {
-                onSelectedChange(indexToNumber(it))
+                onSelectedValueChange(indexToNumber(it))
             }
         )
     }
-}
-
-@Immutable
-interface NumberPickerScope {
-    val state: TextPickerState
-    val onIndexDifferenceChanging: (Int) -> Unit
-    val onSelectedIndexChange: (Int) -> Unit
-    val textForIndex: (Int) -> String
-    val selectedIndex: Int get() = state.selected
-    val itemCount: Int get() = state.itemCount
 }

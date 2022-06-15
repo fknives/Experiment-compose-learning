@@ -21,7 +21,7 @@ fun TimePicker(
     val hourScope = rememberNumberPickerScope(
         state = hourState,
         config = hourConfig,
-        onSelectedChange = {
+        onSelectedValueChange = {
             onSelectedTimeChanged(selectedTime.copy(hour = it))
         }
     )
@@ -31,7 +31,7 @@ fun TimePicker(
     val minuteScope = rememberNumberPickerScope(
         state = minuteState,
         config = minuteConfig,
-        onSelectedChange = {
+        onSelectedValueChange = {
             onSelectedTimeChanged(selectedTime.copy(minute = it))
         }
     )

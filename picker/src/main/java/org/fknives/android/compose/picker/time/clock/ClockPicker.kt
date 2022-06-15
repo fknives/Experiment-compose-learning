@@ -43,7 +43,7 @@ fun ClockTimePicker(
                 changingIsAM = isAMResultByHourLapsCounter(lapsCounter, selectedTime.isAM)
             }
         },
-        onSelectedChange = {
+        onSelectedValueChange = {
             onSelectedTimeChanged(selectedTime.copy(hour = it, isAM = changingIsAM))
         },
         keys = arrayOf(changingHour, hoursLapCounterByIndex, changingIsAM)
@@ -66,7 +66,7 @@ fun ClockTimePicker(
             changingIsAM = isAMResultByHourLapsCounter(lapsCounter, selectedTime.isAM)
             changingHour = hourDifference
         },
-        onSelectedChange = {
+        onSelectedValueChange = {
             onSelectedTimeChanged(selectedTime.copy(hour = selectedTime.hour + changingHour, minute = it, isAM = changingIsAM))
         },
         keys = arrayOf(changingHour, hoursLapCounterByIndex, changingIsAM)
