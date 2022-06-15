@@ -7,6 +7,11 @@ import androidx.compose.ui.unit.Dp
 import org.fknives.android.compose.picker.number.NumberPickerScope
 import org.fknives.android.compose.picker.text.util.TextPickerDefaults
 
+/**
+ * Scope setup from [TimePicker].
+ *
+ * Contains all the Values for the respective Hour, Minute and AMorPM Pickers.
+ */
 @Immutable
 interface TimePickerScope {
     val timePickerMinWidth: Dp
@@ -15,6 +20,9 @@ interface TimePickerScope {
     val amORpmPickerScope: AMorPMPickerScope
 }
 
+/**
+ * Data class implementation of [TimePickerScope]
+ */
 @Immutable
 data class TimePickerScopeImpl(
     override val timePickerMinWidth: Dp,
@@ -23,6 +31,10 @@ data class TimePickerScopeImpl(
     override val amORpmPickerScope: AMorPMPickerScope
 ) : TimePickerScope
 
+/**
+ * Intended scope for AMorPM Picker.
+ * Contained within [TimePickerScope]
+ */
 @Immutable
 interface AMorPMPickerScope {
     val listOfAMorPM: List<String>
@@ -31,6 +43,9 @@ interface AMorPMPickerScope {
     val onIndexDifferenceChanging: (Int) -> Unit
 }
 
+/**
+ * Data class implementation of [AMorPMPickerScope]
+ */
 @Immutable
 data class AMorPMPickerScopeImpl(
     override val listOfAMorPM: List<String>,
@@ -39,6 +54,9 @@ data class AMorPMPickerScopeImpl(
     override val onIndexDifferenceChanging: (Int) -> Unit = TextPickerDefaults.onIndexDifferenceChanging
 ) : AMorPMPickerScope
 
+/**
+ * Caching function for [AMorPMPickerScope]
+ */
 @Composable
 fun rememberAMorPMPickerScope(
     listOfAMorPM: List<String>,
@@ -57,6 +75,9 @@ fun rememberAMorPMPickerScope(
     }
 }
 
+/**
+ * Caching function for [TimePickerScope]
+ */
 @Composable
 fun rememberTimePickerScope(
     timePickerMinWidth: Dp,

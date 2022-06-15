@@ -3,6 +3,9 @@ package org.fknives.android.compose.picker.time
 import androidx.compose.runtime.Immutable
 import java.util.Calendar
 
+/**
+ * Selection state object, representing current selection of [TimePicker]
+ */
 @Immutable
 data class SelectedTime(
     val hour: Int,
@@ -11,6 +14,10 @@ data class SelectedTime(
 ) {
 
     companion object {
+        /**
+         * Creates [SelectedTime] from the given unix [time] stamp.
+         * Defaults to Current Time.
+         */
         fun get(time: Long = System.currentTimeMillis()): SelectedTime {
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = time

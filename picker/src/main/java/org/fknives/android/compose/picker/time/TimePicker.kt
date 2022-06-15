@@ -8,12 +8,25 @@ import org.fknives.android.compose.picker.number.NumberPickerConfig
 import org.fknives.android.compose.picker.number.rememberNumberPickerScope
 import org.fknives.android.compose.picker.number.rememberNumberPickerState
 
+/**
+ * Sets up Time Pickers.
+ * Expected to contain an Hour, Minute and AM/PM Picker, respectively, Number, Number and TextPicker.
+ *
+ * Creates a [TimePickerScope] which then is feeded to [timePickers].
+ *
+ * @param timePickersMinWidth MinWidth given for each TimePicker.
+ * @param selectedTime currently selected [SelectedTime]
+ * @param onSelectedTimeChanged notified when [SelectedTime] should be changes by User Actions.
+ * @param amPm the list of translated texts for "AM" and "PM". Expected order is AM,PM.
+ * @param timePickers the actual Composable for TimePickers.
+ * *Note: Check Defaults for customization: [StandardTimePickers].
+ */
 @Composable
 fun TimePicker(
     timePickersMinWidth: Dp = 40.dp,
     selectedTime: SelectedTime,
-    amPm: List<String> = rememberDefaultAMPMList(),
     onSelectedTimeChanged: (SelectedTime) -> Unit,
+    amPm: List<String> = rememberDefaultAMPMList(),
     timePickers: @Composable (TimePickerScope) -> Unit = { StandardTimePickers(it) }
 ) {
     val hourConfig = remember { NumberPickerConfig.configHourPicker12 }

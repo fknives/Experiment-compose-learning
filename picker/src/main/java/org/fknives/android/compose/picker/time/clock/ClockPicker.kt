@@ -19,9 +19,28 @@ import org.fknives.android.compose.picker.time.rememberDefaultAMPMList
 import org.fknives.android.compose.picker.time.rememberTimePickerScope
 import kotlin.math.abs
 
+/**
+ * Custom [TimePicker][org.fknives.android.compose.picker.time.TimePicker] implementation.
+ *
+ * Main difference is that this implementation contains additional interactions between the elements:
+ * - When Hour Rotates Around   (1 -by decrease-> 12 or 12 -by increase-> 1) the AM/PM Picker is automatically updated.
+ * - When Minute Rotates Around (0 -by decrease-> 59 or 59 by increase-> 0) the Hour Picker is updated
+ * (if that rotates around the AM/PM also)
+ *
+ * These updates are just on the UI while selecting, they become permanent, aka [onSelectedTimeChanged] notified only when the user lets go.
+ *
+ * Creates a Custom Implementation [TimePickerScope] which then is feeded to [timePickers].
+ *
+ * @param timePickersMinWidth MinWidth given for each TimePicker.
+ * @param selectedTime currently selected [SelectedTime]
+ * @param onSelectedTimeChanged notified when [SelectedTime] should be changes by User Actions.
+ * @param amPm the list of translated texts for "AM" and "PM". Expected order is AM,PM.
+ * @param timePickers the actual Composable for TimePickers.
+ * *Note: Check Defaults for customization: [StandardTimePickers].
+ */
 @Composable
 fun ClockTimePicker(
-    timePickerMinWidth: Dp = 40.dp,
+    timePickersMinWidth: Dp = 40.dp,
     selectedTime: SelectedTime,
     amPm: List<String> = rememberDefaultAMPMList(),
     onSelectedTimeChanged: (SelectedTime) -> Unit,
@@ -80,7 +99,7 @@ fun ClockTimePicker(
     )
 
     val scope = rememberTimePickerScope(
-        timePickerMinWidth = timePickerMinWidth,
+        timePickerMinWidth = timePickersMinWidth,
         hoursPickerScope = hourScope,
         minutesPickerScope = minutesScope,
         amORpmPickerScope = amORpmScope

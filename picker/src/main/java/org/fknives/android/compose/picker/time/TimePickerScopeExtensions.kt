@@ -10,6 +10,11 @@ import org.fknives.android.compose.picker.number.CustomInnerTextPicker
 import org.fknives.android.compose.picker.text.TextPicker
 import org.fknives.android.compose.picker.text.util.TextPickerDefaults
 
+/**
+ * Default Pickers for [TimePicker].
+ *
+ * Gets values from [scope] and creates the respective Pickers.
+ */
 @Composable
 fun StandardTimePickers(scope: TimePickerScope) {
     Row {
@@ -21,6 +26,11 @@ fun StandardTimePickers(scope: TimePickerScope) {
     }
 }
 
+/**
+ * Default Hour Picker for [TimePicker]
+ *
+ * Gets values from [TimePickerScope.hoursPickerScope].
+ */
 @Composable
 fun TimePickerScope.HourPicker(
     modifier: Modifier = Modifier,
@@ -35,6 +45,12 @@ fun TimePickerScope.HourPicker(
         )
     }
 }
+
+/**
+ * Default Hour Picker for [TimePicker]
+ *
+ * Gets values from [TimePickerScope.minutesPickerScope].
+ */
 
 @Composable
 fun TimePickerScope.MinutePicker(
@@ -51,6 +67,11 @@ fun TimePickerScope.MinutePicker(
     }
 }
 
+/**
+ * Default Hour Picker for [TimePicker]
+ *
+ * Gets values from [TimePickerScope.amORpmPickerScope].
+ */
 @Composable
 fun TimePickerScope.IsAMorPMPicker(
     modifier: Modifier = Modifier,
